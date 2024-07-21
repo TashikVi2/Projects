@@ -67,11 +67,11 @@ def write_file(filename, lst):
     res.append(obj)
     standard_write(filename, res)
 #для записи нового файла
-def write_file_target(target_file, line_to_copy):
-    res = read_file(target_file)
-    obj = {'Имя': line_to_copy[0], 'Фамилия': line_to_copy[1], 'Телефон': line_to_copy[2]}
-    res.append(obj)
-    standard_write(target_file, line_to_copy)
+# def write_file_target(target_file, line_to_copy):
+#     res = read_file(target_file)
+#     obj = {'Имя': line_to_copy[0], 'Фамилия': line_to_copy[1], 'Телефон': line_to_copy[2]}
+#     res.append(obj)
+#     standard_write(target_file, line_to_copy)
 
 
 # реализуем поиск по фамилии
@@ -83,7 +83,7 @@ def row_search(filename):
             return row
     return "Запись не найдена"
 
-
+# реализуем удаление по номеру строки
 def delete_row(filename):
     row_number = int(input("введите номер строки для удаления:   "))
     res = read_file(filename)
@@ -97,17 +97,6 @@ def standard_write(filename, res):
         f_w = DictWriter(data, fieldnames=['Имя', 'Фамилия', 'Телефон'])
         f_w.writeheader()
         f_w.writerows(res)
-
-
-# изменяем строку по команде
-def change_row(filename):
-    row_number = int(input("введите номер строки для изменения:   "))
-    res = read_file(filename)
-    res[row_number - 1]["Имя"] = data[0]
-    res[row_number - 1]["Фамилия"] = data[1]
-    res[row_number - 1]["Телефон"] = data[2]
-    standard_write(filename, res)
-
 
 # копируем строку по команде(д/з)
 
@@ -124,12 +113,24 @@ def copy_row_to_file(filename, target_file):
         print("Ошибка: указанной строки не существует в исходном файле.")
         return
 
-    with open(target_file, 'a', encoding='utf-8'):  # Открываем файл для добавления (append)
+    with open(target_file, 'a+', encoding='utf-8'):  # Открываем файл для добавления (append)
         #f_target.write(' '.join(line_to_copy)+'\n')
         # print(line_to_copy)
-        write_file_target(target_file, line_to_copy)
+        write_file(target_file, line_to_copy)
 
     print(f"Строка {line_number} успешно скопирована из {filename} в {target_file}.")
+
+# изменяем строку по команде
+def change_row(filename):
+    row_number = int(input("введите номер строки для изменения:   "))
+    res = read_file(filename)
+    data = get_data()
+    res[row_number - 1]["Имя"] = data[0]
+    res[row_number - 1]["Фамилия"] = data[1]
+    res[row_number - 1]["Телефон"] = data[2]
+    standard_write(filename, res)
+
+
 
 
 filename = 'phone.csv'
